@@ -46,29 +46,32 @@ class MoviesPage extends Component {
   componentDidMount() {
     const { location } = this.props;
     const queryArr = getQueryFromLocation(location);
-    this.handleDataWithFirstPage(queryArr);
 
-    window.addEventListener("scroll", this.handleScrollWindow);
+    if(queryArr) {
+      this.handleDataWithFirstPage(queryArr);
+
+      window.addEventListener("scroll", this.handleScrollWindow);
+    }
   }
-
-  componentWillUnmount = () => {
-    window.removeEventListener("scroll", this.handleScrollWindow);
-  };
-
+  
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.location.search !== this.props.location.search) {
       const { location } = this.props;
       const queryArr = getQueryFromLocation(location);
       this.handleDataWithFirstPage(queryArr);
     }
-
+    
     const { fixedBtn } = this.state;
-
+    
     if (prevState.fixedBtn !== fixedBtn) {
       css.fixedBtn = { ...css.fixedBtn, display: fixedBtn };
     }
   }
-
+  
+  componentWillUnmount = () => {
+    window.removeEventListener("scroll", this.handleScrollWindow);
+  };
+  
   handleChange = e => {
     this.setState({ query: e.target.value });
   };
@@ -138,7 +141,6 @@ class MoviesPage extends Component {
 
   render() {
     const { queryCards } = this.state;
-
     const { location } = this.props;
 
     return (
